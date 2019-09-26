@@ -10,6 +10,10 @@
     <link href="<%=Page.ResolveUrl("~") %>Styles/style.css" rel="stylesheet" />
     <script src="<%=Page.ResolveUrl("~") %>Scripts/jquery.js"></script>
     <script src="<%=Page.ResolveUrl("~") %>Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var testVar = '<%= testVar %>';
+        //alert(testVar);
+    </script>
     
    
 </head>
@@ -32,12 +36,12 @@
                                     <div class="form-group">
                                         <asp:DropDownList ID="ddlUsers" CssClass="form-control" runat="server">
                                             <asp:ListItem Value="0">Please Select</asp:ListItem>
-                                            <asp:ListItem Value="1">Shivam</asp:ListItem>
-                                            <asp:ListItem Value="1">Steeve</asp:ListItem>
-                                            <asp:ListItem Value="2">Edward</asp:ListItem>
-                                            <asp:ListItem Value="4">Richard</asp:ListItem>
-                                            <asp:ListItem Value="5">Phill</asp:ListItem>
-                                            <asp:ListItem Value="6">Rayan</asp:ListItem>
+                                            <asp:ListItem Value="1">Ravi</asp:ListItem>
+                                            <asp:ListItem Value="2">Nikhil</asp:ListItem>
+                                            <asp:ListItem Value="3">Rupesh</asp:ListItem>
+                                            <asp:ListItem Value="4">Avinash</asp:ListItem>
+                                            <asp:ListItem Value="5">Satya</asp:ListItem>
+                                            <asp:ListItem Value="6">Raja</asp:ListItem>
                                         </asp:DropDownList>
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator" ValidationGroup="valgrp" ControlToValidate="ddlUsers" InitialValue="0" runat="server" ForeColor="Red" Display="Dynamic" ErrorMessage="Please Select User."></asp:RequiredFieldValidator>
                                     </div>

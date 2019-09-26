@@ -20,5 +20,7 @@ namespace SignalRPrivateChat.controls
                 hdnCurrentUserID.Value = Session["UserId"].ToString();
             }
         }
+
+        
     }
 }

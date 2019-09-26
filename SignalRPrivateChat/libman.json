@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "emojionearea@3.4.1",
+      "destination": "lib/emojionearea/"
+    },
+    {
+      "library": "bootstrap-fileinput@5.0.5",
+      "destination": "Scripts/bootstrap-fileinput/"
+    },
+    {
+      "library": "jquery@3.4.1",
+      "destination": "lib/jquery/"
+    }
+  ]
+}

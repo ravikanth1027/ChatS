@@ -51,9 +51,21 @@
                         systemMessage = true;
                     }
 
-                    var msgElement = document.createElement(
-                        systemMessage ? "i" : "span");
-                    $(msgElement).text(msg);
+                    // My Code
+                    if (msg.includes('#')) {
+                        var msgElement = document.createElement('a');
+                        var array = msg.split("#");
+                        $(msgElement).attr("href", array[1]);
+                        $(msgElement).text("Download File");
+                    } else {
+                        var msgElement = document.createElement(
+                            systemMessage ? "i" : "span");
+                        $(msgElement).text(msg);
+                    }
+                    // My Code
+                    //var msgElement = document.createElement(
+                    //    systemMessage ? "i" : "span");
+                    //$(msgElement).text(msg);
                     e.appendChild(msgElement);
                     $(e).addClass("ui-chatbox-msg");
                     $(e).css("maxWidth", $(box).width());

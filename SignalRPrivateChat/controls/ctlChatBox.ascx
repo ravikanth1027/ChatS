@@ -16,4 +16,5 @@
 <script src="<%=Page.ResolveUrl("~") %>signalr/hubs"></script>
 <link href="<%=Page.ResolveUrl("~") %>styles/jquery.ui.chatbox.css" rel="stylesheet" />
 <script src="<%=Page.ResolveUrl("~") %>scripts/jquery.ui.chatbox.js"></script>
-<script src="<%=Page.ResolveUrl("~") %>scripts/chatboxManager.min.js"></script>
+<%--<script src="<%=Page.ResolveUrl("~") %>scripts/chatboxManager.min.js"></script>--%>
+<script src="<%=Page.ResolveUrl("~") %>scripts/chatboxManager.js"></script>
