@@ -388,6 +388,7 @@ function createPrivateChatWindow(chatHub, userId, ctrId, userName, chatTitle) {
     $('#' + ctrId).siblings().css("position", "relative");
     $('#' + ctrId).siblings().append("<div id=\"typing_" + userId + "\" style=\"width:20px; height:20px; display:none; position:absolute; right:14px; top:8px\"><img height=\"20\" src=\"" + srp + "images/pencil.gif\" /></div>");
     $('#' + ctrId).siblings().append("<input type='file' id='fileUpload' />");
+    
     $('#' + ctrId).siblings().append("<input type='button' id='btnUploadFile' value='Send' onclick='onUploadButton(" + userId + "," + ctrId +")'/>");
     $('#' + ctrId).siblings().find('textarea').on('input', function (e) {
         if (TypingFlag == true) {
@@ -454,8 +455,7 @@ function showfileName(userId, ctrId) {
 }
 
 function onUploadButton(userId, ctrId) {
-
-    console.log("Clicked upload button:" + userId + ctrId);
+    alert(userId.id);
     var data = new FormData();
     var filename_v;
     var files = $("#fileUpload").get(0).files;
@@ -466,23 +466,46 @@ function onUploadButton(userId, ctrId) {
         filename_v = files[0].filename;
     }
 
+    var flag = false;
+    
+    if (typeof userId.id === 'undefined') {
+        flag = false;
+    } else {
+        if (userId.id.includes("group_")) {
+            flag = true
+        }
+    }
+
+
     // Make Ajax request with the contentType = false, and procesDate = false
-    var ajaxRequest = $.ajax({
+    if (flag) {
+        var group_name = userId.id.split("_");
+        var ajaxRequest = $.ajax({
         type: "POST",
         url: "/api/fileupload/uploadfile",
         contentType: false,
         processData: false,
         data: data
     });
-
-    ajaxRequest.done(function (xhr, textStatus) {
-        //console.log(xhr.Key)
-        //console.log(xhr.Value)
-        //var f_tag = "<a href=" + xhr.Value + ">" + filename_v + "</a>"
+        ajaxRequest.done(function (xhr, textStatus) {
         var f_tag = "#" + xhr.Value;
-        chatHub.server.sendPrivateMessage(userId, f_tag);
-
+        chatHub.server.broadCastMessage($('#hdUserName').val(), f_tag, group_name[1]);
     });
+    }else{
+        var ajaxRequest = $.ajax({
+            type: "POST",
+            url: "/api/fileupload/uploadfile",
+            contentType: false,
+            processData: false,
+            data: data
+        });
+
+        ajaxRequest.done(function (xhr, textStatus) {
+            var f_tag = "#" + xhr.Value;
+            chatHub.server.sendPrivateMessage(userId, f_tag);
+
+        });
+    }
 
 }
 
