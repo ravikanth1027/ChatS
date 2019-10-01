@@ -162,6 +162,7 @@ namespace SignalRPrivateChat.ChatHelper
             Clients.Caller.receiveMessage("Group Chat Hub", msg, list);
             Clients.OthersInGroup(GroupName).receiveMessage("NewConnection", GroupName + " " + username + " " + id, count);
             //Clients.AllExcept(Exceptional).receiveMessage("NewConnection", username + " " +GroupName + id, count);
+            var GroupId = GroupName;
             string fromconnectionid = Context.ConnectionId;
                 string strfromUserId = (ConnectedUsers.Where(u => u.ConnectionId == Context.ConnectionId).Select(u => u.UserID).FirstOrDefault()).ToString();
                 int _fromUserId = 0;
@@ -179,8 +180,8 @@ namespace SignalRPrivateChat.ChatHelper
                     {
                         // send to                                           
                         //Chat Title
-                        //Groups.Add(ToUser.ConnectionId, GroupName); // Just Checking - Working but client 2 cnnot send back since groupname is not available so add it as chat window
-                        Clients.Client(ToUser.ConnectionId).samplemessage(_fromUserId.ToString(), FromUsers[0].UserName, FromUsers[0].UserName, GroupName);
+                        Groups.Add(ToUser.ConnectionId, GroupName); // Just Checking - Working but client 2 cnnot send back since groupname is not available so add it as chat window
+                        Clients.Client(ToUser.ConnectionId).samplemessage(_fromUserId.ToString(), FromUsers[0].UserName, FromUsers[0].UserName, "group_"+GroupName, GroupId, "You have been added to this group");
                     }
                 }
 
@@ -328,7 +329,10 @@ namespace SignalRPrivateChat.ChatHelper
         {
             var id = Context.ConnectionId;
             string[] Exceptional = new string[0];
-            Clients.Group(GroupName, Exceptional).receiveMessage(msgFrom, msg, "");
+            //Clients.Group(GroupName, Exceptional).receiveMessage(msgFrom, msg, "");
+            //Clients.Group(GroupName, Exceptional).sendGroupMessage(GroupName,msgFrom, msg, "");
+            //Clients.AllExcept(Exceptional).sendGroupMessage(GroupName, msgFrom, msg, "");
+            Clients.Group(GroupName).sendGroupMessage(GroupName, GroupName, msg, msgFrom);
             //Clients.All.receiveMessage(msgFrom, msg, "");
             /*string[] Exceptional = new string[1];
             Exceptional[0] = id;       

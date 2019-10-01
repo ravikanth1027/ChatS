@@ -62,11 +62,7 @@
 </script>
 </head>
 <body>
-         <%--   <div class="row">
-    <div class="col-sm-4" style="background-color:lavender;">.col-sm-4</div>
-    <div class="col-sm-4" style="background-color:lavenderblush;">.col-sm-4</div>
-    <div class="col-sm-4" style="background-color:lavender;">.col-sm-4</div>
-    </div>--%>
+         
     <form id="form1" runat="server">
         <div>
         </div>
@@ -115,7 +111,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="myModal_new" role="dialog">
+  <div class="modal fade" id="myModal_new" role="dialog" >
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -144,19 +140,19 @@
   </div>
 
            
-     <div style="width: 55%; border: solid 1px Red; height: 40px">
+     <div style="width: 55%; border: solid 1px Red; height: 40px ; display: none">
             <h3 style="margin: 10px 0px 0px 10px">
                 <span id="spnName"></span>
                 <span id="GroupName" style="margin-left: 25px;"></span>
             </h3>
      </div>
-     <div style="width: 55%; border: solid 1px Red; height: 40px">
+     <div style="width: 55%; border: solid 1px Red; height: 40px ;display: none">
               <h3 style="margin: 10px 0px 0px 10px">
                   <span id="connID"></span>
                   <span id="usersCount"></span>
               </h3>
         </div>
-     <div id="groupChatdiv" style="width: 55%; border: solid 1px Red; height: auto ; display: block">
+     <div id="groupChatdiv" style="width: 55%; border: solid 1px Red; height: auto ; display: none">
             <div style="height: auto" id="divUsers"></div>
             <div style="height: 70%" id="divChat"></div>
             <div style="border: dashed 1px Black; margin-top: 5%;">
@@ -166,7 +162,7 @@
             <div style="float: left; width: 60%; padding: 4px">
                 <input type="text" style="width: 100%" id="txtMsg" />
             </div>
-        <div style="float: right; width: 15%; padding: 4px">
+        <div style="float: right; width: 15%; padding: 4px; display: none">
                 <button id="btnSend" onclick="sendtoGroup()" >Send Message</button>
         </div>
        </div>
