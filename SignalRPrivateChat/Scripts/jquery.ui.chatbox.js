@@ -55,8 +55,10 @@
                     if (msg.includes('#')) {
                         var msgElement = document.createElement('a');
                         var array = msg.split("#");
+                        var fileName = array[1].split('\\');
                         $(msgElement).attr("href", array[1]);
-                        $(msgElement).text("Download File");
+                        $(msgElement).attr("download", array[1]);
+                        $(msgElement).text(fileName[fileName.length - 1 ]);
                     } else {
                         var msgElement = document.createElement(
                             systemMessage ? "i" : "span");

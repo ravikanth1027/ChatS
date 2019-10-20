@@ -1,0 +1,44 @@
+Decentalized:
+Blockchain technology is a decentralized technology
+    Notion of decentralized Technology
+	  - Many forms 
+	       - Communications (peer to peer / point to point)
+		   - all should have copy /  private 
+		   - all should particiapte in consensus / some can decide
+
+		   
+		   
+		   
+Common Platforms cannot be compared 
+   - Differences in the problem each are addressing
+   - Differences in implementations of consensus
+   
+  
+  
+
+
+Esseantial Characteristics:
+   Technology:
+    - CS
+	- Communication
+	
+   Data:
+       - Txn generation ?
+	   - Txn validation ?
+	   - Who can create a Block ?
+	   - WHo will decide on which block will be added to the chain ?
+	   - Who can View the Block contents ?
+	   - WHat is the communication
+	   - Smart contracts
+
+
+	   
+Building Own Blockchain:
+   Challenges
+      - Permissionless
+	        - Consistency vs Latency
+			
+
+
+	  
+  

@@ -14,7 +14,7 @@ namespace SignalRPrivateChat.ChatHelper
         #region---Data Members---
         static List<UserDetail> ConnectedUsers = new List<UserDetail>();
         static List<MessageDetail> CurrentMessage = new List<MessageDetail>();
-        static List<GroupDetails> GroupName = new List<GroupDetails>();
+        static List<GroupDetails> GroupMessages = new List<GroupDetails>();
         Dictionary<string, List<String>> UserCreatedGroups = new Dictionary<string, List<String>>();
         #endregion
 
@@ -115,6 +115,14 @@ namespace SignalRPrivateChat.ChatHelper
             Clients.Caller.GetLastMessages(ToUserID, CurrentChatMessages);
         }
 
+        [HubMethodName("RequestLastGroupMessage")]
+        public void RequestLastGroupMessage(int FromUserID, string ToUserID)
+        {
+            List<string> GroupNameList = ToUserID.Split('_').ToList<string>();
+            List<GroupDetails> CurrentChatMessages = (from u in GroupMessages where ((u.GName == GroupNameList[1])) select u).ToList();
+            //send to caller user
+            Clients.Caller.GetGroupLastMessages(ToUserID, CurrentChatMessages);
+        }
         public void SendUserTypingRequest(string toUserId)
         {
             string strfromUserId = (ConnectedUsers.Where(u => u.ConnectionId == Context.ConnectionId).Select(u => u.UserID).FirstOrDefault()).ToString();
@@ -191,30 +199,7 @@ namespace SignalRPrivateChat.ChatHelper
                 
            
             }
-        //public void AddgroupServer(string groupid, string usersingroup)
-        //{
-        //    //List<string> users = usersingroup.Split(',').ToList<string>();
-        //    //if (UserCreatedGroups.ContainsKey(groupid))
-        //    //{
-        //    //    List<string> temp_list = UserCreatedGroups[groupid];
-        //    //    temp_list.AddRange(users);
-        //    //}
-        //    //else
-        //    //{
-        //    //    UserCreatedGroups.Add(groupid, users);
-
-        //    //}
-        //    var id = Context.ConnectionId;
-        //    //string[] Exceptional = new string[1];
-        //    //Exceptional[0] = id;
-
-        //    string[] Exceptional = new string[1];
-        //    Exceptional[0] = id;
-
-        //    Clients.AllExcept(Exceptional).receiveMessage("NewConnection", "AmmuNew" + " " + id, 1);
-
-        //}
-
+       
         [HubMethodName("sendgroupmessage")]
         public void SendGroupMessage(string toGroupId, string message)
         {
@@ -265,6 +250,13 @@ namespace SignalRPrivateChat.ChatHelper
             CurrentMessage.Add(_MessageDetail);
             if (CurrentMessage.Count > 100)
                 CurrentMessage.RemoveAt(0);
+        }
+
+        private void AddGroupMessageinCache(GroupDetails _GroupDetails)
+        {
+            GroupMessages.Add(_GroupDetails);
+            if (GroupMessages.Count > 100)
+                GroupMessages.RemoveAt(0);
         }
         #endregion
 
@@ -329,14 +321,12 @@ namespace SignalRPrivateChat.ChatHelper
         {
             var id = Context.ConnectionId;
             string[] Exceptional = new string[0];
-            //Clients.Group(GroupName, Exceptional).receiveMessage(msgFrom, msg, "");
-            //Clients.Group(GroupName, Exceptional).sendGroupMessage(GroupName,msgFrom, msg, "");
-            //Clients.AllExcept(Exceptional).sendGroupMessage(GroupName, msgFrom, msg, "");
+            
             Clients.Group(GroupName).sendGroupMessage(GroupName, GroupName, msg, msgFrom);
-            //Clients.All.receiveMessage(msgFrom, msg, "");
-            /*string[] Exceptional = new string[1];
-            Exceptional[0] = id;       
-            Clients.AllExcept(Exceptional).receiveMessage(msgFrom, msg);*/
+            GroupDetails _GroupDetail = new GroupDetails { GName = GroupName, sender = msgFrom, txt = msg };
+            //FromUserID = _fromUserId, FromUserName = FromUsers[0].UserName, ToUserID = _toUserId, ToUserName = ToUsers[0].UserName, Message = message };
+            AddGroupMessageinCache(_GroupDetail);
+
         }
 
     }

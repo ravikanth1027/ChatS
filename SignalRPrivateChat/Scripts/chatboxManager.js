@@ -49,7 +49,7 @@ function registerClientMethods(chatHub) {
         // Add All Users
         for (i = 0; i < allUsers.length; i++) {
             //AddUser(chatHub, allUsers[i].ConnectionId, allUsers[i].UserName, userid);
-            //console.log("Adding User:" + allUsers[i].UserName)
+            ////console.log("Adding User:" + allUsers[i].UserName)
             AddUser(chatHub, allUsers[i].UserID, allUsers[i].UserName, userid);
         }
 
@@ -79,7 +79,7 @@ chatHub.client.messageReceived = function (userName, message) {
 
 
 chatHub.client.sendPrivateMessage = function (windowId, fromUserName, chatTitle, message) {
-    //console.log("sendPrivateMessage" + windowId);
+    ////console.log("sendPrivateMessage" + windowId);
     var ctrId = 'private_' + windowId;
     if ($('#' + ctrId).length == 0) {
         createPrivateChatWindow(chatHub, windowId, ctrId, fromUserName, chatTitle);
@@ -105,14 +105,14 @@ chatHub.client.sendPrivateMessage = function (windowId, fromUserName, chatTitle,
 // Ravi
 
 chatHub.client.sendGroupMessage = function (chatTitle, windowId, message, fromUserName) {
-    console.log("windowID" + windowId);
-    console.log("fromUsername" + fromUserName);
-    console.log("ChatTitle: " + chatTitle);
+    //console.log("windowID" + windowId);
+    //console.log("fromUsername" + fromUserName);
+    //console.log("ChatTitle: " + chatTitle);
     console.log("mesasge: "+ message);
     var ctrId = "group_"+windowId;
-    console.log("ctrID---------", $('#' + ctrId).length );
+    //console.log("ctrID---------", $('#' + ctrId).length );
     if ($('#' + ctrId).length == 0) {
-        console.log("I am here");
+        //console.log("I am here");
         createPrivateChatWindow(chatHub, windowId, ctrId, fromUserName, chatTitle);
         $('#chatAudio')[0].play();
     }
@@ -142,17 +142,17 @@ chatHub.client.sendGroupMessage = function (chatTitle, windowId, message, fromUs
 chatHub.client.receiveMessage = function (msgFrom, msg, senderid) {
     
     if (msgFrom == "NewConnection") {
-        //console.log("msg:", msg);
+        ////console.log("msg:", msg);
         $("#usersCount").text(senderid);
         $('#divUsers').append('<li>' + msg + '</li>')
     }
     else if (msgFrom == "ChatHub") {
-        //console.log("msg:", msg);
+        ////console.log("msg:", msg);
         $("#usersCount").text(senderid);
         $("#connID").text(msg);
     }
     else if (msgFrom == "RU") {
-        //console.log("msg:", msg);
+        ////console.log("msg:", msg);
         var online = senderid.split('#');
         var length = online.length;
         for (var i = 0; i < length; i++) {
@@ -163,7 +163,7 @@ chatHub.client.receiveMessage = function (msgFrom, msg, senderid) {
             + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
     }
     else {
-        //console.log("msg:", msg);
+        ////console.log("msg:", msg);
         $("#txtTo").val(senderid);
         $('#divChat').append('<li><strong>' + msgFrom
             + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
@@ -172,33 +172,72 @@ chatHub.client.receiveMessage = function (msgFrom, msg, senderid) {
 
 chatHub.client.GetLastMessages = function (TouserID, CurrentChatMessages) {
     //debugger;
-    var ctrId = 'private_' + TouserID;
-    var AllmsgHtml = "";
-    for (i = 0; i < CurrentChatMessages.length; i++) {
-        if (CurrentChatMessages[i].Message.includes("#")) {
-            var array = CurrentChatMessages[i].Message.split("#");
-            var msg = '<a href="' + array[1] + '">Download File</a>';
-            CurrentChatMessages[i].Message = msg;
-            //console.log('Helo' + CurrentChatMessages[i].Message)
-            
-        }
+        var ctrId = 'private_' + TouserID;
+        
+        var AllmsgHtml = "";
+        for (i = 0; i < CurrentChatMessages.length; i++) {
+            if (CurrentChatMessages[i].Message.includes("#")) {
+                var array = CurrentChatMessages[i].Message.split("#");
+                var fileName = array[1].split('\\');
+                var msg = '<a href="' + array[1] + '">' + fileName[fileName.length - 1] + '</a>';
+                CurrentChatMessages[i].Message = msg;
 
-        AllmsgHtml += "<div id='divChatWindow' style=\"display: block; max-width: 200px;\" class=\"ui-chatbox-msg\">";
-        if (i == CurrentChatMessages.length - 1) {
-            if ($('#' + ctrId).children().last().html() != "<b>" + CurrentChatMessages[i].FromUserName + ": </b><span>" + CurrentChatMessages[i].Message + "</span>") {
+
+            }
+
+            AllmsgHtml += "<div id='divChatWindow' style=\"display: block; max-width: 200px;\" class=\"ui-chatbox-msg\">";
+            if (i == CurrentChatMessages.length - 1) {
+                if ($('#' + ctrId).children().last().html() != "<b>" + CurrentChatMessages[i].FromUserName + ": </b><span>" + CurrentChatMessages[i].Message + "</span>") {
+                    AllmsgHtml += "<b>" + CurrentChatMessages[i].FromUserName + ": </b><span>" + CurrentChatMessages[i].Message + "</span>";
+                }
+            }
+            else {
                 AllmsgHtml += "<b>" + CurrentChatMessages[i].FromUserName + ": </b><span>" + CurrentChatMessages[i].Message + "</span>";
             }
+            AllmsgHtml += "</div>";
         }
-        else {
-            AllmsgHtml += "<b>" + CurrentChatMessages[i].FromUserName + ": </b><span>" + CurrentChatMessages[i].Message + "</span>";
-        }
-        AllmsgHtml += "</div>";
-    }
-    $('#' + ctrId).prepend(AllmsgHtml);
+        $('#' + ctrId).prepend(AllmsgHtml);
+    
+    
 }
 
+
+chatHub.client.GetGroupLastMessages = function (TouserID, CurrentChatMessages) {
+    //debugger;
+    var TouserID = TouserID;
+    //console.log("TouserID: " + TouserID);
+    if (TouserID.includes("group_")) {
+        //console.log("in Get Messages - group");
+        var ctrId = TouserID;
+        ////console.log('Helo' + CurrentChatMessages[0].txt)
+        var AllmsgHtml = "";
+        for (i = 0; i < CurrentChatMessages.length; i++) {
+            if (CurrentChatMessages[i].txt.includes("#")) {
+                var array = CurrentChatMessages[i].txt.split("#");
+                var fileName = array[1].split('\\');
+                var msg = '<a href="' + array[1] + '">' + fileName[fileName.length - 1] + '</a>';
+                CurrentChatMessages[i].txt = msg;
+
+
+            }
+
+            AllmsgHtml += "<div id='divChatWindow' style=\"display: block; max-width: 200px;\" class=\"ui-chatbox-msg\">";
+            if (i == CurrentChatMessages.length - 1) {
+                if ($('#' + ctrId).children().last().html() != "<b>" + CurrentChatMessages[i].sender + ": </b><span>" + CurrentChatMessages[i].txt + "</span>") {
+                    AllmsgHtml += "<b>" + CurrentChatMessages[i].sender + ": </b><span>" + CurrentChatMessages[i].txt + "</span>";
+                }
+            }
+            else {
+                AllmsgHtml += "<b>" + CurrentChatMessages[i].sender + ": </b><span>" + CurrentChatMessages[i].txt + "</span>";
+            }
+            AllmsgHtml += "</div>";
+        }
+        $('#' + ctrId).prepend(AllmsgHtml);
+    } 
+
+}
 chatHub.client.sampleMessage = function (toUser, fromUser, fromUserid, groupid, groupName, msg) {
-    //console.log(" groupName" + groupName + "groupid" + groupid);
+    ////console.log(" groupName" + groupName + "groupid" + groupid);
     var sel = document.getElementById('join_groups');
     var opt = document.createElement('option');
     opt.appendChild(document.createTextNode(groupName));
@@ -210,13 +249,13 @@ chatHub.client.sampleMessage = function (toUser, fromUser, fromUserid, groupid, 
     $(".mydiv").append(code);
     var id = groupid;
     //OpenPrivateChatWindow(chatHub, id, groupName);
-    //console.log(" hdUsername--------------------" + $('#hdUserName').val());
+    ////console.log(" hdUsername--------------------" + $('#hdUserName').val());
     //chatHub.server.broadCastMessage($('#hdUserName').val(), msg, groupName);
     $(code).dblclick(function () {
         var id = $(this).attr('id');
-        //console.log("samplemessghae:", id)
+        ////console.log("samplemessghae:", id)
         if (connectionid != id) {
-            //console.log("groupid ---id"+id)
+            ////console.log("groupid ---id"+id)
             OpenPrivateChatWindow(chatHub, "group_"+id, groupName);
         }
     });
@@ -250,9 +289,9 @@ function CheckHiddenWindow() {
 
 function AddUser(chatHub, id, name, userid) {
     var currentuserid = parseInt($("[id$=hdnCurrentUserID]").val());
-    //console.log("currentuserid:" + currentuserid);
+    ////console.log("currentuserid:" + currentuserid);
     var connectionid = $('#hdId').val();
-    //console.log("connectionid:" + connectionid);
+    ////console.log("connectionid:" + connectionid);
     var code = "";
     if (connectionid == "") {
         if (userid == currentuserid) {
@@ -289,9 +328,9 @@ function AddUser(chatHub, id, name, userid) {
 
 function AddUsertoGroup(chatHub, id, name, userid) {
     var currentuserid = parseInt($("[id$=hdnCurrentUserID]").val());
-    //console.log("currentuserid:" + currentuserid);
+    ////console.log("currentuserid:" + currentuserid);
     var connectionid = $('#hdId').val();
-    //console.log("connectionid:" + connectionid);
+    ////console.log("connectionid:" + connectionid);
     var code = "";
     if (connectionid == "") {
         if (userid == currentuserid) {
@@ -333,10 +372,10 @@ function AddUsertoGroup(chatHub, id, name, userid) {
 //}
 function OpenPrivateChatWindow(chatHub, id, userName) {
     var ctrId = "";
-    console.log("Username: " + userName + "  ID:"+ id)
+    //console.log("Username: " + userName + "  ID:"+ id)
     if (id.includes("group_")) {
         ctrId = id
-        ////console.log("crtd group_:" + ctrId);
+        //////console.log("crtd group_:" + ctrId);
     } else {
         ctrId = 'private_' + id;
     }
@@ -348,7 +387,7 @@ function OpenPrivateChatWindow(chatHub, id, userName) {
 }
 
 function createPrivateChatWindow(chatHub, userId, ctrId, userName, chatTitle) {
-    //console.log("ctrId:" + ctrId);
+    ////console.log("ctrId:" + ctrId);
     $("#chat_div").append("<div id=\"" + ctrId + "\"></div>")
     showList.push(ctrId);
     
@@ -387,8 +426,8 @@ function createPrivateChatWindow(chatHub, userId, ctrId, userName, chatTitle) {
 
     $('#' + ctrId).siblings().css("position", "relative");
     $('#' + ctrId).siblings().append("<div id=\"typing_" + userId + "\" style=\"width:20px; height:20px; display:none; position:absolute; right:14px; top:8px\"><img height=\"20\" src=\"" + srp + "images/pencil.gif\" /></div>");
-    $('#' + ctrId).siblings().append("<input type='file' id='fileUpload' />");
-    
+    $('#' + ctrId).siblings().append("<input type='file' id='fileUpload_" + userId +"' /> ");
+    console.log("Sending UserId", userId);
     $('#' + ctrId).siblings().append("<input type='button' id='btnUploadFile' value='Send' onclick='onUploadButton(" + userId + "," + ctrId +")'/>");
     $('#' + ctrId).siblings().find('textarea').on('input', function (e) {
         if (TypingFlag == true) {
@@ -399,7 +438,15 @@ function createPrivateChatWindow(chatHub, userId, ctrId, userName, chatTitle) {
 
     var FromUserID = parseInt($("[id$=hdnCurrentUserID]").val());
     var ToUserID = userId;
-    chatHub.server.requestLastMessage(FromUserID, ToUserID);
+    //console.log("For Last Messages:", ToUserID);
+    if (ToUserID.includes("group_")) {
+        //console.log("Calling  RequestLastGroupMessage");
+        //var group_name = ToUserID.split("_");
+        chatHub.server.RequestLastGroupMessage(FromUserID, ToUserID);
+    } else {
+        chatHub.server.requestLastMessage(FromUserID, ToUserID);
+    }
+    
 }
 
 chatHub.client.ReceiveTypingRequest = function (userId) {
@@ -429,24 +476,24 @@ function ResetTypingFlag() {
 }
 
 function AddMessage(userName, message) {
-    ////console.log("Called Addmesssge from group");
+    //////console.log("Called Addmesssge from group");
     //$('#divChatWindow').append('<div class="message"><span class="userName">' + userName + '</span>: ' + message + '</div>');
     //var height = $('#divChatWindow')[0].scrollHeight;
     //$('#divChatWindow').scrollTop(height);
 }
 
 function saveFile() {
-    //console.log("Clicked on save file");
+    ////console.log("Clicked on save file");
     var firstName = $("#fileContainer").val();
-    //console.log(firstName.files[0])
+    ////console.log(firstName.files[0])
     localStorage.setItem("file", firstName)
 }
 
 function showfileName(userId, ctrId) {
     var x = document.getElementById('fileContainer');
-    //console.log(x.files.length);
+    ////console.log(x.files.length);
     if (x.files.length > 0) {
-        //console.log("Inside length");
+        ////console.log("Inside length");
         getBase64(x.files[0], userId);
         
     }
@@ -455,15 +502,30 @@ function showfileName(userId, ctrId) {
 }
 
 function onUploadButton(userId, ctrId) {
-    alert(userId.id);
+    console.log("onUpload Button:",userId);
     var data = new FormData();
     var filename_v;
-    var files = $("#fileUpload").get(0).files;
+    if (typeof userId.id === 'undefined') {
+        //flag = false;
+        var files = $("#fileUpload_" + userId).get(0).files;
+    } else {
+        if (userId.id.includes("group_")) {
+            //flag = true
+            var files = $("#fileUpload_" + userId.id).get(0).files;
+        }
+    }
+    //var files = $("#fileUpload_" + userId).get(0).files;
+    //$("#fileUpload").value = "";
+    //$("#fileUpload").val('');
+    
+    
 
     // Add the uploaded image content to the form data collection
+    console.log("Length of files",files.length)
     if (files.length > 0) {
         data.append("UploadedImage", files[0]);
         filename_v = files[0].filename;
+        console.log(files[0])
     }
 
     var flag = false;
@@ -488,9 +550,11 @@ function onUploadButton(userId, ctrId) {
         data: data
     });
         ajaxRequest.done(function (xhr, textStatus) {
-        var f_tag = "#" + xhr.Value;
+            var f_tag = "#" + xhr.Value;
+            console.log("xhr.Value",f_tag)
         chatHub.server.broadCastMessage($('#hdUserName').val(), f_tag, group_name[1]);
-    });
+        });
+        //$("#fileUpload").val('');
     }else{
         var ajaxRequest = $.ajax({
             type: "POST",
@@ -505,15 +569,17 @@ function onUploadButton(userId, ctrId) {
             chatHub.server.sendPrivateMessage(userId, f_tag);
 
         });
+        //$("#fileUpload").val('');
     }
-
+    //
+    //files = '';
 }
 
 function btnUpload() {
-    //console.log("Helloword")
+    ////console.log("Helloword")
     // Checking whether FormData is available in browser  
     if (window.FormData !== undefined) {
-        //console.log("Inside Ajax function")
+        ////console.log("Inside Ajax function")
         var fileUpload = document.getElementById("FileUpload1").get(0);
         var files = fileUpload.files;
 
@@ -523,7 +589,7 @@ function btnUpload() {
         // Looping over all files and add it to FormData object  
         for (var i = 0; i < files.length; i++) {
             fileData.append(files[i].name, files[i]);
-            ////console.log(files[i]);
+            //////console.log(files[i]);
         }
 
         // Adding one more key to FormData object  

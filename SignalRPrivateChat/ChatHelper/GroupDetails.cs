@@ -7,10 +7,8 @@ namespace SignalRPrivateChat.ChatHelper
 {
     public class GroupDetails
     {
-        private List<UserDetail> _groupMembers;
-
-        public int GroupConnectionID { get; set; }
-        public string GroupName { get; set; }
-        public List<UserDetail> GroupMembers { get => _groupMembers; set => _groupMembers = value; }
+        public string GName { get; set; }
+        public string sender { get; set; }
+        public string txt { get; set; }
     }
 }
