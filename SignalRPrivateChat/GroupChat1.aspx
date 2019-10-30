@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GroupChat.aspx.cs" Inherits="SignalRPrivateChat.GroupChat" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="GroupChat1.aspx.cs" Inherits="SignalRPrivateChat.GroupChat" %>
 
 <!DOCTYPE html>
 

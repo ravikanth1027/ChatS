@@ -275,10 +275,10 @@ namespace SignalRPrivateChat.ChatHelper
             
         }
 
-        public Task ImageMessage(ImageMessage file)
-        {
-            return Clients.All.SendAsync("ImageMessage", file);
-        }
+        //public Task ImageMessage(ImageMessage file)
+        //{
+        //    return Clients.All.SendAsync("ImageMessage", file);
+        //}
 
         public void sendPrivateFile(string toUserId, string message)
         {
