@@ -79,6 +79,11 @@
     <script src="~/Scripts/jqueryui/jquery-ui.js"></script>
     <script src="~/Scripts/jqueryui/jquery-ui.min.js"></script>
     <script src="~/Scripts/jquery.ui.chatbox.js"></script>
+    <script>
+        window.resolveUrl = function(url) {
+            return "@Url.Content("~")" + url; // Handle slashes, nulls, etc...
+        };
+    </script>
 
 
 
